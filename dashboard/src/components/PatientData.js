@@ -8,9 +8,13 @@ import {
     AllergiesVisualizer,
     ConditionsVisualizer,
     MedicationsVisualizer,
+    ObservationsVisualizer
 } from 'fhir-visualizers';
 
 
+/**
+ * A demo component that displays FHIR data from the current patient.
+ */
 const PatientData = () => {
     const patient = usePatient();
     const fhirClient = useFHIRClient();
@@ -18,9 +22,15 @@ const PatientData = () => {
     const [resources, setResources] = useState([]);
 
     useEffect(() => {
-        getAllResources(fhirClient).then((resources) => {
-            setResources(resources);
-        });
+        getAllResources(fhirClient)
+            .then((resources) => {
+                if (resources) {
+                    setResources(resources);
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }, [fhirClient]);
 
     const filterResource = (resourceType) => {
@@ -33,6 +43,7 @@ const PatientData = () => {
             <ConditionsVisualizer rows={filterResource('Condition')} />
             <MedicationsVisualizer rows={filterResource('MedicationRequest')} />
             <AllergiesVisualizer rows={filterResource('AllergyIntolerance')} />
+            <ObservationsVisualizer rows={filterResource('Observations')} />
         </Container>
     );
 };

@@ -1,4 +1,5 @@
 import Header from './Header';
+import Footer from './Footer';
 import PatientData from './PatientData';
 import Heatmap from './Heatmap';
 
@@ -11,6 +12,7 @@ const Dashboard = () => {
             <Header />
             <Heatmap />
             <PatientData />
+            <Footer />
         </>
     );
 }

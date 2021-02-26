@@ -1,6 +1,5 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import { useFHIRClient } from './FHIRClientContext';
-import Loading from '../components/Loading';
 
 export const UserContext = createContext(null);
 
@@ -12,17 +11,25 @@ export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
+        
+        // get the current user resource from the FHIR server
         async function getUserData() {
-            const currentUser = await fhirClient.user.read();
-            setUser(currentUser);
+            try {
+                const currentUser = await fhirClient.user.read();
+                if (currentUser) {
+                    setUser(currentUser);
+                }
+            } catch (error) {
+                console.log(error);
+            }
         }
         getUserData();
+
     }, [fhirClient]);
 
-    return user ?
+    return (
         <UserContext.Provider value={user}>
             {children}
         </UserContext.Provider>
-        :
-        <Loading />
+    );
 };

@@ -1,6 +1,5 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import { useFHIRClient } from './FHIRClientContext';
-import Loading from '../components/Loading';
 
 export const PatientContext = createContext(null);
 
@@ -19,10 +18,10 @@ export const PatientProvider = ({ children }) => {
         getCurrentPatient();
     }, [fhirClient]);
 
-    return patient ?
+    return (
+        patient &&
         <PatientContext.Provider value={patient}>
             {children}
         </PatientContext.Provider>
-        :
-        <Loading />
+    );
 };

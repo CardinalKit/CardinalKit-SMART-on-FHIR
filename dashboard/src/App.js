@@ -14,8 +14,8 @@ const App = () => {
     async function launchSMART() {
       try {
         const client = await FHIR.oauth2.init({
-          clientId: 'cardinalkit_dashboard',
-          scope: 'launch/patient openid profile'
+          clientId: process.env.REACT_APP_SMART_CLIENTID,
+          scope: 'patient/*.read launch/patient openid fhirUser profile'
         });
         setFhirClient(client);
       } catch (error) {
