@@ -1,40 +1,13 @@
-import { useEffect, useState } from 'react';
-import FHIR from 'fhirclient';
-import { FHIRClientProvider } from './context/FHIRClientContext';
-import { PatientProvider } from './context/PatientContext';
-import { UserProvider } from './context/UserContext';
-import Dashboard from './components/Dashboard';
+import React from "react";
+import { BrowserRouter, Route } from "react-router-dom";
+import Launcher from "./Launcher";
+import Home from "./Home";
 
-const App = () => {
-
-  const [fhirClient, setFhirClient] = useState(null);
-
-  useEffect(() => {
-    // initiate SMART EHR Launch Sequence
-    async function launchSMART() {
-      try {
-        const client = await FHIR.oauth2.init({
-          clientId: process.env.REACT_APP_SMART_CLIENTID,
-          scope: 'patient/*.read launch/patient openid fhirUser profile'
-        });
-        setFhirClient(client);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    launchSMART();
-  }, []);
-
-  return (
-    fhirClient &&
-    <FHIRClientProvider fhirClient={fhirClient}>
-      <UserProvider>
-        <PatientProvider>
-          <Dashboard />
-        </PatientProvider>
-      </UserProvider>
-    </FHIRClientProvider>
-  );
-}
-
-export default App;
+export default function App() {
+    return (
+        <BrowserRouter>
+            <Route path="/app" component={Home} />
+            <Route path="/" component={Launcher} exact />
+        </BrowserRouter>
+    );
+};
