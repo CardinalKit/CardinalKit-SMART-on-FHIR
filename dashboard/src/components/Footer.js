@@ -6,7 +6,7 @@ const Footer = () => {
             <Container>
                 <div>
                     <hr />
-                    <p className="text-center">SMART Provider Dashboard for CardinalKit</p>
+                    <p className="text-center">SMART Provider Dashboard for <a href="https://cardinalkit.org" target="_blank">CardinalKit</a></p>
                 </div>
             </Container>
         </footer>

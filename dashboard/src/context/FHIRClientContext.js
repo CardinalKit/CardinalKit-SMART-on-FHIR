@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import FHIR from "fhirclient";
+import Loading from '../components/Loading';
 
 export const FHIRClientContext = createContext(null);
 
@@ -20,5 +21,5 @@ export const FHIRClientProvider = ({ children }) => {
             <FHIRClientContext.Provider value={client}>
                 {children}
             </FHIRClientContext.Provider>
-            : "Loading...");
+            : <Loading />);
 }
