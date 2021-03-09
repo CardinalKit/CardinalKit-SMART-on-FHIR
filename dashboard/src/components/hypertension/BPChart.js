@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Container } from 'react-bootstrap';
 import { Line } from 'react-chartjs-2';
 import data from './sample-data.json';
 import { useFHIRClient } from '../../context/FHIRClientContext';
@@ -16,15 +17,17 @@ const BPChart = () => {
     useEffect(() => {
         // format data for chart
         const result = data.filter((patient) => patient.patientId === patientId)[0];
-        
-        const systolicData = result.bp_measurements.map(({ date, systolic }) => ({ x: new Date(date), y: systolic }));
-        setSystolicReadings(systolicData);
 
-        const diastolicData = result.bp_measurements.map(({ date, diastolic }) => ({ x: new Date(date), y: diastolic }));
-        setDiastolicReadings(diastolicData);
-        
-        const adherenceData = result.adherence_log.map(({ date }) => ({ x: new Date(date), y: 0 }));
-        setAdherenceLog(adherenceData);
+        if (result) {
+            const systolicData = result.bp_measurements.map(({ date, systolic }) => ({ x: new Date(date), y: systolic }));
+            setSystolicReadings(systolicData);
+
+            const diastolicData = result.bp_measurements.map(({ date, diastolic }) => ({ x: new Date(date), y: diastolic }));
+            setDiastolicReadings(diastolicData);
+
+            const adherenceData = result.adherence_log.map(({ date }) => ({ x: new Date(date), y: 0 }));
+            setAdherenceLog(adherenceData);
+        }
     }, []);
 
 
@@ -69,9 +72,12 @@ const BPChart = () => {
 
 
     return (
-        <div className="pt-3 pb-3">
-            <Line data={chartData} options={options} />
-        </div>
+        <Container className="p-3">
+            { (systolicReadings && diastolicReadings) ?
+                <Line data={chartData} options={options} />
+                :
+                <p className="lead">No blood pressure data available.</p>}
+        </Container>
     )
 };
 
