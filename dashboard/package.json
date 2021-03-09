@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.1.10",
     "bootstrap": "^4.6.0",
     "chart.js": "^2.9.4",
+    "cross-env": "^7.0.3",
     "fhir-visualizers": "^0.0.3",
     "fhirclient": "^2.3.11",
     "firebase": "^8.2.7",
@@ -22,7 +23,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cross-env BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
