@@ -6,8 +6,8 @@ A SMART-on-FHIR dashboard application built in React that can be launched from w
 
 ## Testing the app with the SMART Launcher
 
-1. Install dependencies by running `yarn install`
+1. From the `dashboard` folder, install dependencies by running `yarn install`
 2. Start the application locally by running `yarn start`.
-3. Load the [SMART Launcher](https://launch.smarthealthit.org) in your browser, select a sample patient and provider, then add `http://localhost:3000` as the App Launch URL and launch the app.
+3. Load the [SMART Launcher](https://launch.smarthealthit.org) in your browser, select a sample patient and provider, then add `http://localhost:3000/launch` as the App Launch URL and launch the app.
 
 <img src="https://user-images.githubusercontent.com/1212163/110365131-a622d780-8012-11eb-9270-4291c243108b.png" />

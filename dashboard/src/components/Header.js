@@ -33,7 +33,7 @@ const Header = () => {
                 />
             </Navbar.Brand>
             <Navbar.Text className="text-white mx-auto">
-                <h4>CardinalKit Hypertension Dashboard</h4>
+                <h4>CardinalKit Dashboard</h4>
             </Navbar.Text>
             <Navbar.Text className="text-white ml-auto">
                 <Button variant="dark"> {getProviderName()}</Button>

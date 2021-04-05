@@ -4,8 +4,7 @@ export default function Splash() {
     return (
         <div>
             <div className="mx-auto mt-5 mb-5 text-center">
-                <img src={logo} />
-                <br />
+                <img src={logo} alt="CardinalKit Logo" />
                 <br />
                 <h2>CardinalKit SMART Dashboard</h2>
                 <br />

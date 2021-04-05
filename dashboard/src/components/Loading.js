@@ -6,8 +6,7 @@ const Loading = () => {
     <Container>
         <Row>
             <div className="mx-auto mt-5 mb-5 text-center" style={{ width: '500px'}}>
-                <img src={logo} />
-                <br />
+                <img src={logo} alt="CardinalKit Logo"/>
                 <br />
                 <h2>CardinalKit</h2>
                 <br />

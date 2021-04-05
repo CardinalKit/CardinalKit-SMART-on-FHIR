@@ -3,6 +3,9 @@ import { Container } from 'react-bootstrap';
 import { Line } from 'react-chartjs-2';
 import data from './sample-data.json';
 import { useFHIRClient } from '../../context/FHIRClientContext';
+import moment from 'moment';
+import * as zoom from 'chartjs-plugin-zoom';
+
 
 
 const BPChart = () => {
@@ -28,7 +31,7 @@ const BPChart = () => {
             const adherenceData = result.adherence_log.map(({ date }) => ({ x: new Date(date), y: 0 }));
             setAdherenceLog(adherenceData);
         }
-    }, []);
+    }, [patientId]);
 
 
     const chartData = {
@@ -63,9 +66,25 @@ const BPChart = () => {
     };
 
     const options = {
+        pan: {
+            enabled: true,
+            mode: 'x'
+        },
+        zoom: {
+            enabled: true,
+            mode: 'x'
+        },
+        tooltips: {
+            enabled: false
+        },
         scales: {
             xAxes: [{
-                type: 'time'
+                type: 'time',
+                time: {
+                    unit: 'day',
+                    suggestedMin: moment().subtract(14, 'days').toDate(),
+                    suggestedMax: moment().toDate(),
+                }
             }]
         },
     }

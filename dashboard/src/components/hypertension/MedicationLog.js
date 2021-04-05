@@ -32,7 +32,7 @@ const MedicationLog = () => {
             setMedicationList(medications);
         }
         getMedicationList();
-    }, []);
+    }, [fhirClient, patientId]);
 
     return (
         <Container className="p-3">
@@ -57,9 +57,10 @@ const MedicationLog = () => {
                         : <p className="lead">No medication log data available.</p>}
 
                 </Col>
-                <Col md={4}>
-                    <h4 className="lead">Medication List</h4>
-                    {(medicationList && medicationList.length) ?
+                {(medicationList && medicationList.length) &&
+                    <Col md={4}>
+                        <h4 className="lead">Medication List</h4>
+
                         <div>
                             <ul>
                                 {medicationList.map((medicationName) => {
@@ -68,12 +69,8 @@ const MedicationLog = () => {
                                 }
                             </ul>
                         </div>
-                        :
-                        <ul>
-                            <li>No medication data available.</li>
-                        </ul>
-                    }
-                </Col>
+                    </Col>
+                }
             </Row>
         </Container>
     );

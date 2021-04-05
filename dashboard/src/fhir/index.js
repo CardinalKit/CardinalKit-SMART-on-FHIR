@@ -38,7 +38,7 @@ export const getMedicationName = (codings) => {
     var coding = codings.find((code) => {
         return code.system === "http://www.nlm.nih.gov/research/umls/rxnorm";
     });
-    return coding && coding.display || "Unknown Medication";
+    return (coding && coding.display) || "Unknown Medication";
 };
 
 export const formatName = (resource) => {
