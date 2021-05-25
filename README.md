@@ -2,7 +2,14 @@
 
 # SMART Provider Dashboard for CardinalKit
 
-A SMART-on-FHIR dashboard application built in React that can be launched from within an Electronic Health Record system, designed to be used with [CardinalKit](https://cardinalkit.org/) patient-facing mobile apps.
+A SMART-on-FHIR dashboard application built in React that can be launched from within an Electronic Health Record system, designed to be used with [CardinalKit](https://cardinalkit.org/) patient-facing mobile apps. 
+
+Check out the <a href="https://www.youtube.com/watch?v=CGj_X79yk-o">demo video</a>.
+
+The screenshot below shows a dashboard used to visualize sample hypertension data, launched within an instance of <a href="https://open-emr.org">OpenEMR</a>.
+
+<img src="https://user-images.githubusercontent.com/1212163/121445480-88417780-c95f-11eb-9858-a0f1e8929a25.png" width="800" />
+
 
 ## Testing the app with the SMART Launcher
 
