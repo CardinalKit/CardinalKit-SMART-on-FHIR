@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Container, Card, Row, Col, Dropdown, DropdownButton } from 'react-bootstrap';
-import { ArrowUp, ArrowUpCircle, Gear } from 'react-bootstrap-icons';
+import { ArrowUpCircle, ArrowDownCircle, Gear } from 'react-bootstrap-icons';
 import { Line } from 'react-chartjs-2';
 import data from './sample-data.json';
 import { useFHIRClient } from '../../context/FHIRClientContext';
@@ -9,9 +9,16 @@ import * as zoom from 'chartjs-plugin-zoom';
 import PatientBanner from './PatientBanner';
 
 
-// define threshold values for defining uncontrolled BP
+// configuration
 const systolicHighThreshold = 140;
 const diastolicHighThreshold = 90;
+const systolicLowThreshold = 90;
+const diastolicLowThreshold = 60;
+const bpUnit = "mmHg";
+
+// frequently used icons
+const HighArrow = () => <ArrowUpCircle className="m-1" />;
+const LowArrow = () => <ArrowDownCircle className="m-1" />;
 
 const BPChart = () => {
 
@@ -26,13 +33,14 @@ const BPChart = () => {
     const [labs, setLabs] = useState();
 
     // stats
-    const [percentUncontrolled, setPercentUncontrolled] = useState(0);
-    const [systolicMin, setSystolicMin] = useState();
-    const [systolicMax, setSystolicMax] = useState();
-    const [systolicMean, setSystolicMean] = useState();
-    const [diastolicMin, setDiastolicMin] = useState();
-    const [diastolicMax, setDiastolicMax] = useState();
-    const [diastolicMean, setDiastolicMean] = useState();
+    const [percentHigh, setPercentHigh] = useState(0);
+    const [percentLow, setPercentLow] = useState(0);
+    const [systolicMin, setSystolicMin] = useState(0);
+    const [systolicMax, setSystolicMax] = useState(0);
+    const [systolicMean, setSystolicMean] = useState(0);
+    const [diastolicMin, setDiastolicMin] = useState(0);
+    const [diastolicMax, setDiastolicMax] = useState(0);
+    const [diastolicMean, setDiastolicMean] = useState(0);
 
     useEffect(() => {
         // format BP data for display
@@ -67,8 +75,11 @@ const BPChart = () => {
                 setDiastolicMax(Math.max(...diastolicValues));
                 setDiastolicMean(Math.round((diastolicValues.reduce((acc, val) => acc + val, 0) / diastolicValues.length)));
 
-                const fractionUncontrolled = (bpData.filter(measurement => measurement.systolic >= systolicHighThreshold || measurement.diastolic >= diastolicHighThreshold).length) / bpData.length;
-                setPercentUncontrolled(Math.round(fractionUncontrolled * 100));
+                const fractionHigh = (bpData.filter(measurement => measurement.systolic >= systolicHighThreshold || measurement.diastolic >= diastolicHighThreshold).length) / bpData.length;
+                setPercentHigh(Math.round(fractionHigh * 100));
+
+                const fractionLow = (bpData.filter(measurement => measurement.systolic <= systolicLowThreshold || measurement.diastolic <= diastolicLowThreshold).length) / bpData.length;
+                setPercentLow(Math.round(fractionLow * 100));
             }
 
         }
@@ -78,7 +89,7 @@ const BPChart = () => {
     const chartData = {
         datasets: [
             {
-                label: 'Systolic Blood Pressure (mmHg)',
+                label: `Systolic Blood Pressure (${bpUnit})`,
                 data: systolicReadings,
                 fill: false,
                 backgroundColor: 'rgb(0,152,219)',
@@ -86,7 +97,7 @@ const BPChart = () => {
                 pointRadius: 6
             },
             {
-                label: 'Diastolic Blood Pressure (mmHg)',
+                label: `Diastolic Blood Pressure (${bpUnit})`,
                 data: diastolicReadings,
                 fill: false,
                 backgroundColor: 'rgb(233, 131, 0)',
@@ -175,7 +186,19 @@ const BPChart = () => {
                             <Card.Title>Summary</Card.Title>
                             <Card.Text>
                                 <ul className="list-group">
-                                    <li className="list-group-item"><ArrowUpCircle className="mr-2 mb-1" /><strong>{percentUncontrolled}%</strong> of blood pressure readings in the last two weeks were elevated.</li>
+                                    <li className="list-group-item">
+                                        {percentHigh > 0 ? 
+                                        <p><HighArrow /><strong>{percentHigh}%</strong> of BP readings were high.</p>
+                                        :
+                                        <p>There were no elevated blood pressures in the last two weeks.</p>
+                                        }
+                                        {percentLow > 0 ? 
+                                        <p><LowArrow /><strong>{percentLow}%</strong> of BP readings were low.</p>
+                                        :
+                                        <p>There were no low blood pressures in the last two weeks.</p>
+                                        }
+                                    </li>
+
                                 </ul>
                             </Card.Text>
                         </Card.Body>
@@ -187,9 +210,21 @@ const BPChart = () => {
                             <Card.Title>Systolic BP</Card.Title>
                             <Card.Text>
                                 <ul className="list-group">
-                                    <li className={`list-group-item ${systolicMin > systolicHighThreshold && 'list-group-item-danger'}`}>Min <strong>{systolicMin}</strong> <small>mmHg</small> {systolicMin > systolicHighThreshold && <ElevatedArrow />}</li>
-                                    <li className={`list-group-item ${systolicMax > systolicHighThreshold && 'list-group-item-danger'}`}>Max <strong>{systolicMax}</strong> <small>mmHg</small> {systolicMax > systolicHighThreshold && <ElevatedArrow />}</li>
-                                    <li className={`list-group-item ${systolicMean > systolicHighThreshold && 'list-group-item-danger'}`}>Avg <strong>{systolicMean}</strong> <small>mmHg</small> {systolicMean > systolicHighThreshold && <ElevatedArrow />}</li>
+                                    <li className={`list-group-item ${((systolicMin <= systolicLowThreshold) || (systolicMin >= systolicHighThreshold)) && 'list-group-item-danger'}`}>
+                                        Min <strong>{systolicMin}</strong> <small>{bpUnit}</small>
+                                        {systolicMin >= systolicHighThreshold && <HighArrow />}
+                                        {systolicMin <= systolicLowThreshold && <LowArrow />}
+                                    </li>
+                                    <li className={`list-group-item ${((systolicMax <= systolicLowThreshold) || (systolicMax >= systolicHighThreshold)) && 'list-group-item-danger'}`}>
+                                        Max <strong>{systolicMax}</strong> <small>{bpUnit}</small>
+                                        {systolicMax >= systolicHighThreshold && <HighArrow />}
+                                        {systolicMax <= systolicLowThreshold && <LowArrow />}
+                                    </li>
+                                    <li className={`list-group-item ${((systolicMean <= systolicLowThreshold) || (systolicMean >= systolicHighThreshold)) && 'list-group-item-danger'}`}>
+                                        Avg <strong>{systolicMean}</strong> <small>{bpUnit}</small>
+                                        {systolicMean >= systolicHighThreshold && <HighArrow />}
+                                        {systolicMean <= systolicLowThreshold && <LowArrow />}
+                                    </li>
                                 </ul>
                             </Card.Text>
                         </Card.Body>
@@ -201,9 +236,21 @@ const BPChart = () => {
                             <Card.Title>Diastolic BP</Card.Title>
                             <Card.Text>
                                 <ul class="list-group">
-                                    <li className={`list-group-item ${diastolicMin > diastolicHighThreshold && 'list-group-item-danger'}`}>Min <strong>{diastolicMin}</strong> <small>mmHg</small> {diastolicMin > diastolicHighThreshold && <ElevatedArrow />}</li>
-                                    <li className={`list-group-item ${diastolicMax > diastolicHighThreshold && 'list-group-item-danger'}`}>Max <strong>{diastolicMax}</strong> <small>mmHg</small> {diastolicMax > diastolicHighThreshold && <ElevatedArrow />}</li>
-                                    <li className={`list-group-item ${diastolicMean > diastolicHighThreshold && 'list-group-item-danger'}`}>Avg <strong>{diastolicMean}</strong> <small>mmHg</small> {diastolicMean > diastolicHighThreshold && <ElevatedArrow />}</li>
+                                    <li className={`list-group-item ${((diastolicMin < diastolicLowThreshold) || (diastolicMin > diastolicHighThreshold)) && 'list-group-item-danger'}`}>
+                                        Min <strong>{diastolicMin}</strong> <small>{bpUnit}</small>
+                                        {diastolicMin > diastolicHighThreshold && <HighArrow />}
+                                        {diastolicMin < diastolicLowThreshold && <LowArrow />}
+                                    </li>
+                                    <li className={`list-group-item ${((diastolicMax < diastolicLowThreshold) || (diastolicMax > diastolicHighThreshold)) && 'list-group-item-danger'}`}>
+                                        Max <strong>{diastolicMax}</strong> <small>{bpUnit}</small>
+                                        {diastolicMax > diastolicHighThreshold && <HighArrow />}
+                                        {diastolicMax < diastolicLowThreshold && <LowArrow />}
+                                    </li>
+                                    <li className={`list-group-item ${((diastolicMean < diastolicLowThreshold) || (diastolicMean > diastolicHighThreshold)) && 'list-group-item-danger'}`}>
+                                        Avg <strong>{diastolicMean}</strong> <small>{bpUnit}</small>
+                                        {diastolicMean > diastolicHighThreshold && <HighArrow />}
+                                        {diastolicMean < diastolicLowThreshold && <LowArrow />}
+                                    </li>
                                 </ul>
                             </Card.Text>
                         </Card.Body>
@@ -252,9 +299,5 @@ const BPChart = () => {
         </Container>
     )
 };
-
-const ElevatedArrow = () => <ArrowUp className="mb-1" style={{ color: '' }} />;
-
-
 
 export default BPChart;
