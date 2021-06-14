@@ -16,7 +16,7 @@ const Header = () => {
         if (user) {
             return formatName(user);
         } else if(id_token) {
-            return id_token.given_name + " " + id_token.family_name;
+            return "Dr. " + id_token.given_name + " " + id_token.family_name;
         } else {
             return "User not available";
         }
@@ -32,8 +32,8 @@ const Header = () => {
                     height="50"
                 />
             </Navbar.Brand>
-            <Navbar.Text className="text-white mx-auto">
-                <h4>CardinalKit Dashboard</h4>
+            <Navbar.Text className="text-white mt-2">
+                <h5>CardinalKit Hypertension Dashboard</h5>
             </Navbar.Text>
             <Navbar.Text className="text-white ml-auto">
                 <Button variant="dark"> {getProviderName()}</Button>

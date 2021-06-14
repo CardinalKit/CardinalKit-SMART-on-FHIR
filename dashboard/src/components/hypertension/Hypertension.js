@@ -1,7 +1,6 @@
 import { Container, Tabs, Tab } from 'react-bootstrap';
-import MedicationLog from './MedicationLog';
+import DataLog from './DataLog';
 import BPChart from './BPChart';
-import PatientBanner from './PatientBanner';
 
 /**
  * An example dashboard that visualizes useful information for managing hypertension
@@ -10,13 +9,12 @@ export default function Hypertension() {
     return (
         <>
             <Container style={{ marginTop: '6em' }}>
-                <PatientBanner />
-                <Tabs defaultActiveKey="bpchart">
+                <Tabs defaultActiveKey="bpchart" className="m-1">
                     <Tab eventKey="bpchart" title="BP Trend">
                         <BPChart />
                     </Tab>
-                    <Tab eventKey="medlog" title="Medication Log">
-                        <MedicationLog />
+                    <Tab eventKey="medlog" title="Data Integrity">
+                        <DataLog />
                     </Tab>
                 </Tabs>
             </Container>
