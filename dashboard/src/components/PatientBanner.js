@@ -1,5 +1,5 @@
-import { formatName } from '../../fhir';
-import { usePatient } from '../../context/PatientContext';
+import { formatName } from '../fhir';
+import { usePatient } from '../context/PatientContext';
 import moment from 'moment';
 
 const PatientBanner = () => {
