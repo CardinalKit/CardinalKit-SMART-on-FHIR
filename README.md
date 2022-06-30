@@ -1,6 +1,7 @@
-<img src="https://user-images.githubusercontent.com/1212163/110364874-5512e380-8012-11eb-898d-f89a49ffa616.png" />
+![CardinalKit Logo](https://raw.githubusercontent.com/CardinalKit/.github/main/assets/ck-header-light.png#gh-light-mode-only)
+![CardinalKit Logo](https://raw.githubusercontent.com/CardinalKit/.github/main/assets/ck-header-dark.png#gh-dark-mode-only)
 
-# SMART Provider Dashboard for CardinalKit
+# SMART-on-FHIR Provider Dashboard for CardinalKit
 
 A SMART-on-FHIR dashboard application built in React that can be launched from within an Electronic Health Record system, designed to be used with [CardinalKit](https://cardinalkit.org/) patient-facing mobile apps. 
 
@@ -18,13 +19,21 @@ The screenshot below shows a dashboard used to visualize sample hypertension dat
     - `REACT_APP_SMART_CLIENTID` and `REACT_APP_SMART_CLIENTSECRET` are the client credentials registered with your EHR system. (Note: The SMART Launcher does not validate these, so any two strings will work.)
     - `REACT_APP_SMART_SCOPE` is the set of [FHIR scopes](http://www.hl7.org/fhir/smart-app-launch/scopes-and-launch-context/) your app will request access to. 
 
-## Testing the app with the SMART Launcher
+## Testing with the SMART Launcher
 
 1. Start the application locally by running `yarn start`.
-2. Load the [SMART Launcher](https://launch.smarthealthit.org) in your browser, select a sample patient and provider, then add `http://localhost:3000/launch` as the App Launch URL and launch the app.
+2. Load the [SMART Launcher](https://launch.smarthealthit.org) in your browser.
+3. Select **Provider EHR Launch** and set **FHIR Version** to **R4**.
+4. Select a sample patient and provider.
+5. Enter `http://localhost:3000/launch` in **App Launch URL** and launch the app!
 
-# License
+## Customization
+
+In the `dashboard/src/components/hypertension` folder you'll find an example hypertension dashboard that can be customized to visualize any data of your choice!
+
+## License
 
 CardinalKit's SMART-on-FHIR Dashboard is available under the MIT license.
 
-<img src="https://user-images.githubusercontent.com/1212163/110365131-a622d780-8012-11eb-9270-4291c243108b.png" />
+![Stanford Byers Center for Biodesign Logo](https://raw.githubusercontent.com/CardinalKit/.github/main/assets/ck-footer-light.png#gh-light-mode-only)
+![Stanford Byers Center for Biodesign Logo](https://raw.githubusercontent.com/CardinalKit/.github/main/assets/ck-footer-dark.png#gh-dark-mode-only)
