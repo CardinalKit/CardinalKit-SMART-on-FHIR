@@ -3,6 +3,9 @@
 
 # SMART-on-FHIR Provider Dashboard for CardinalKit
 
+> [!IMPORTANT]  
+> The CardinalKit SMART-on-FHIR Dashboard has moved to https://github.com/StanfordSpezi/SpeziSMARTonFHIR. The version in this repository is archived.
+
 A SMART-on-FHIR dashboard application built in React that can be launched from within an Electronic Health Record system, designed to be used with [CardinalKit](https://cardinalkit.org/) patient-facing mobile apps. 
 
 Check out the <a href="https://www.youtube.com/watch?v=CGj_X79yk-o">demo video</a>.
